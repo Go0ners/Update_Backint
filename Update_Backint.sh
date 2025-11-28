@@ -45,6 +45,17 @@ fi
 
 log_info "Starting AWS Backint Agent update"
 
+# 0. Backup existing installation
+BACKUP_TIMESTAMP=$(date +"%Y%m%d%H%M%S")
+BACKUP_DIR="${BACKINT_DIR}-backup-$BACKUP_TIMESTAMP"
+log_info "Creating backup: $BACKUP_DIR"
+if cp -r "$BACKINT_DIR" "$BACKUP_DIR"; then
+    log_info "Backup created successfully"
+else
+    log_error "Backup failed"
+    exit 1
+fi
+
 # 1. Download new version
 log_info "Downloading new version..."
 cd "$BACKINT_DIR/package"
